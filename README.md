@@ -1,6 +1,7 @@
 # About the project
 
-10-minute play with fullcalendar.io by directly input the event objects under JSON format.
+10-minute play with fullcalendar.io by directly input the event objects under JSON format.\
+Live app: [https://jsoncal.netlify.app/](https://jsoncal.netlify.app/)
 
 ## Available Scripts
 
