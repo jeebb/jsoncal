@@ -62,7 +62,7 @@ const Calendar = ({ id, onDelete }) => {
           >
             {showTextArea ? 'Hide JSON Input' : 'Show JSON Input'}
           </button>
-          <button onClick={() => onDelete(id)} style={{ backgroundColor: '#f44336' }}>
+          <button onClick={() => onDelete(id)} style={{ padding: '0.5rem 1rem', backgroundColor: '#f44336', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', marginRight: '0.5rem' }}>
             Delete Calendar
           </button>
           {showTextArea && (
