@@ -4,22 +4,25 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 
-const Calendar = () => {
-    const [events, setEvents] = useState([]);
+const Calendar = ({ id, onDelete }) => {
+    const [events, setEvents] = useState(() => {
+      const savedEvents = localStorage.getItem(`calendar_${id}_events`);
+      return savedEvents ? JSON.parse(savedEvents) : [];
+    });
     const [calendarKey, setCalendarKey] = useState(0);
     const [jsonInput, setJsonInput] = useState('');
     const [showTextArea, setShowTextArea] = useState(false);
   
     const placeholderJson = `Example:
-  [
-    {
-      "title": "Team Meeting",
-      "start": "2024-07-08T10:00:00",
-      "end": "2024-07-08T11:30:00",
-      "description": "Weekly team sync-up"
-    },
-    ...
-  ]`;
+      [
+        {
+          "title": "Team Meeting",
+          "start": "2024-07-08T10:00:00",
+          "end": "2024-07-08T11:30:00",
+          "description": "Weekly team sync-up"
+        },
+        ...
+      ]`;
   
     const handleJsonSubmit = () => {
       try {
@@ -37,6 +40,10 @@ const Calendar = () => {
     useEffect(() => {
       console.log("Current events state:", events);
     }, [events]);
+
+    useEffect(() => {
+      localStorage.setItem(`calendar_${id}_events`, JSON.stringify(events));
+    }, [id, events]);
   
     const formatEventTime = (date) => {
       return date ? new Date(date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
@@ -54,6 +61,9 @@ const Calendar = () => {
             style={{ padding: '0.5rem 1rem', backgroundColor: '#4CAF50', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', marginRight: '0.5rem' }}
           >
             {showTextArea ? 'Hide JSON Input' : 'Show JSON Input'}
+          </button>
+          <button onClick={() => onDelete(id)} style={{ backgroundColor: '#f44336' }}>
+            Delete Calendar
           </button>
           {showTextArea && (
             <div style={{ marginTop: '0.5rem' }}>

@@ -1,11 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Calendar from './Calendar';
 
 const App = () => {
-  const [calendars, setCalendars] = useState([1]);
+  const [calendars, setCalendars] = useState(() => {
+    const savedCalendars = localStorage.getItem('calendars');
+    return savedCalendars ? JSON.parse(savedCalendars) : [1];
+  });
+
+  useEffect(() => {
+    localStorage.setItem('calendars', JSON.stringify(calendars));
+  }, [calendars]);
 
   const addCalendar = () => {
     setCalendars([...calendars, calendars.length + 1]);
+  };
+
+  const deleteCalendar = (id) => {
+    setCalendars(prevCalendars => prevCalendars.filter(calId => calId !== id));
+    localStorage.removeItem(`calendar_${id}_events`);
   };
 
   return (
@@ -20,7 +32,7 @@ const App = () => {
         
       </div>
       {calendars.map(id => (
-        <Calendar key={id} id={id} />
+        <Calendar key={id} id={id} onDelete={deleteCalendar} />
       ))}
     </div>
   );
